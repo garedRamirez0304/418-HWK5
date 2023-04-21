@@ -24,6 +24,7 @@ public class SWindow2<A,B> implements Query<A,B> {
 	public void next(A item, Sink<B> sink) {
 		B agg;
 		if (nElements >= 1) {
+			System.out.println("prev: " + previous + " " + "curr: " + item);
 			agg = op.apply(previous, item);
 			nElements = 2;
 			sink.next(agg);

@@ -72,6 +72,15 @@ public class UTestECG {
 	}
 
 	@Test
+	public void testT() {
+
+		Query<Integer,Double> q = HeartRate.qRMSSD();
+		SLastCount<Double> sink = S.lastCount();
+
+		Q.execute(Q.intStream(10), q, sink);
+	}
+
+	@Test
 	public void testPNN50() {
 		System.out.println("***** Test pNN50 *****");
 	

@@ -42,7 +42,6 @@ public class Detect implements Query<VTL,Long> {
 
 	@Override
 	public void next(VTL item, Sink<Long> sink) {
-		System.out.println("Threshold " + THRESHOLD + " vs " + item.l + " with " + item.ts);
 		curr_time ++;
 		if (sleep > 0) {
 
@@ -51,16 +50,11 @@ public class Detect implements Query<VTL,Long> {
 		}
 		// Begin peak computation
 		if (item.l >= THRESHOLD && window == -1) {
-			System.out.println("Starting window with " + item.ts);
 			this.window = 40;
-
 		}
 		// Sliding max computation
 		if (window > 0) {
-
-			System.out.println("In here with " + item.v +" and max " + this.current_max.v);
 			if (this.current_max.v <= item.v) {
-				System.out.println("In here2");
 				this.current_max = item;
 //				this.current_max.ts = curr_time;
 			}
@@ -68,19 +62,16 @@ public class Detect implements Query<VTL,Long> {
 		}
 		// Sleep and wait before next computation
 		if (window == 0) {
-			System.out.println("Window with ts: " + this.current_max.ts + "current_time  " + this.curr_time);
 			sink.next(this.current_max.ts);
 			this.sleep = (int)(72 - (this.curr_time - this.current_max.ts));
 			window = -1;
 			this.current_max = new VTL(0, 0, 0);
-			System.out.println("Sleep time " + sleep);
 		}
 
 	}
 
 	@Override
 	public void end(Sink<Long> sink) {
-		// TODO
 		sink.end();
 	}
 	
