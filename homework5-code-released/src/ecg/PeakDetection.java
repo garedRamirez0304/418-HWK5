@@ -48,10 +48,12 @@ public class PeakDetection {
 		// TODO
 		// Compute the pipeline results using qLength and get the initial datapoint
 		Query<Integer, Double> q = qLength();
-		Query<Integer, Pair<Integer, Integer>> q2 = Q.parallel(Q.id(), Q.intStream(10), (x, y));
+		Query<Integer, Integer> id = Q.id();
+
+		Query<Integer, Pair<Integer, Integer>> q2 = Q.parallel(id,Q.sWindowInv(1, -1, (x, y) -> x + 1, (x, y) -> x), (x, y)->Pair.from(x, y));
 
 		// Pass both pieces into parallel and build a new VTL object
-		Query<Integer, VTL> q3 = Q.parallel(q, q2, (l, v) -> new VTL(v, (long)93, l));
+		Query<Integer, VTL> q3 = Q.parallel(q, q2, (l, v) -> new VTL(v.getLeft(), v.getRight(), l));
 
 		// Call detect with new VTL object
 		Detect bruh = new Detect();
