@@ -19,6 +19,7 @@ public class Map<A,B> implements Query<A,B> {
 
 	@Override
 	public void next(A item, Sink<B> sink) {
+//		System.out.println("[MAP] " + item + " to " + op.apply(item));
 		sink.next(op.apply(item));
 	}
 

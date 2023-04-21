@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/homework5-code-released/lib/hamcrest-all-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/homework5-code-released/lib/junit-4.13.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

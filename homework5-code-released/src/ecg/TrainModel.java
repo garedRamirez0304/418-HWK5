@@ -11,6 +11,7 @@ public class TrainModel {
 		// TODO
 		// Hint: Use PeakDetection.qLength()
 		Query<Integer, Double> q = Q.pipeline(PeakDetection.qLength(), Q.foldAvg());
+//		return PeakDetection.qLength();
 		return q;
 	}
 
@@ -20,6 +21,7 @@ public class TrainModel {
 		System.out.println("***********************************************");
 		System.out.println();
 
+//		Q.execute(Data.ecgStream("100-all.csv"), qLengthAvg(), S.printer());
 		Q.execute(Data.ecgStream("100-all.csv"), qLengthAvg(), S.printer());
 	}
 

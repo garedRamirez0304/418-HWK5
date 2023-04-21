@@ -19,7 +19,15 @@ public class Detect implements Query<VTL,Long> {
 
 	// Choose this to be two times the average length
 	// over the entire signal.
-	private static final double THRESHOLD = 0.0; // TODO
+	private static final double THRESHOLD = 118.02269657654423 * 2; // TODO
+
+	int window = -1;
+	int sleep = -1;
+//	Long current_max = 0L;
+
+	int curr_time;
+
+	VTL current_max = new VTL(0, 0, 0);
 
 	// TODO
 
@@ -34,12 +42,42 @@ public class Detect implements Query<VTL,Long> {
 
 	@Override
 	public void next(VTL item, Sink<Long> sink) {
-		// TODO
+		System.out.println("Threshold " + THRESHOLD + " vs " + item.l);
+		curr_time ++;
+		if (sleep > 0) {
+
+			sleep --;
+			return;
+		}
+		// Begin peak computation
+		if (item.l > THRESHOLD && window == -1) {
+			this.window = 40;
+		}
+		// Sliding max computation
+		if (window > 0) {
+			double max = Math.max(item.l, this.current_max.l);
+			if ((long) max == item.l) {
+				this.current_max = item;
+//				this.current_max.ts = curr_time;
+			}
+			window --;
+		}
+		// Sleep and wait before next computation
+		if (window == 0) {
+			System.out.println("Window ");
+			sink.next(this.current_max.ts);
+			this.current_max = new VTL(0, 0, 0);
+			this.sleep = (int)(72 - (this.curr_time - this.current_max.ts));
+			window = -1;
+			System.out.println("Sleep time " + sleep);
+		}
+
 	}
 
 	@Override
 	public void end(Sink<Long> sink) {
 		// TODO
+		sink.end();
 	}
 	
 }
