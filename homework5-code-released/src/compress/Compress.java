@@ -11,45 +11,74 @@ public class Compress {
 
 	public static Query<Integer,Integer> delta() {
 		// TODO
-		return null;
+		return Q.pipeline(
+				Q.emit(1, 0),
+				Q.sWindowInv(2, 0, (x, y) -> y - x, (x, y) -> x + y)
+				);
 	}
 
 	public static Query<Integer,Integer> deltaInv() {
 		// TODO
-		return null;
+		return Q.pipeline(
+				Q.emit(1, 0),
+				Q.sWindowInv(2, 0, (x, y) -> x + y, (x, y) -> x)
+		);
 	}
 
 	public static Query<Integer,Integer> zigzag() {
 		// TODO
-		return null;
+		Query<Integer, Integer> q = Q.map(x -> {
+			System.out.println("Zip zap with " + x);
+			if (x >= 0) {
+				return 2 * x;
+			} else {
+				return 2 * Math.abs(x) - 1;
+			}
+		});
+		return q;
 
 	}
 
 	public static Query<Integer,Integer> zigzagInv() {
 		// TODO
-		return null;
+		return Q.map(x -> {
+			System.out.println("In zigzagInv with " + x);
+			if (x % 2 == 0) {
+				return x / 2;
+			} else {
+				return -1 * (x + 1) / 2;
+			}
+		});
 
 	}
 
 	public static Query<Integer,Integer> pack() {
 		// TODO
-		return null;
+		return new Pack();
 
 	}
 
 	public static Query<Integer,Integer> unpack() {
 		// TODO
-		return null;
+		return new UnPack();
 	}
 
 	public static Query<Integer,Integer> compress() {
 		// TODO
-		return null;
+		return Q.pipeline(
+				delta(),
+				zigzag(),
+				pack()
+		);
 	}
 
 	public static Query<Integer,Integer> decompress() {
 		// TODO
-		return null;
+		return Q.pipeline(
+				unpack(),
+				zigzagInv(),
+				deltaInv()
+		);
 	}
 
 	public static void main(String[] args) {

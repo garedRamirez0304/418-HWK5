@@ -27,7 +27,7 @@ public class PeakDetection {
 		);
 		Query<Double, Double> deriv = Q.pipeline(
 				Q.emit(2, (double)0),
-				Q.sWindow3((a, b, c) -> a - c),
+				Q.sWindow3((a, b, c) -> c - a),
 				Q.map(x -> x/2),
 				Q.ignore(1)
 		);
@@ -50,7 +50,7 @@ public class PeakDetection {
 		Query<Integer, Double> q = qLength();
 		Query<Integer, Integer> id = Q.id();
 
-		Query<Integer, Pair<Integer, Integer>> q2 = Q.parallel(id,Q.sWindowInv(1, -1, (x, y) -> x + 1, (x, y) -> x), (x, y)->Pair.from(x, y));
+		Query<Integer, Pair<Integer, Integer>> q2 = Q.parallel(id,Q.sWindowInv(1, -1, (x, y) -> x + 1, (x, y) -> x), Pair::from);
 
 		// Pass both pieces into parallel and build a new VTL object
 		Query<Integer, VTL> q3 = Q.parallel(q, q2, (l, v) -> new VTL(v.getLeft(), v.getRight(), l));

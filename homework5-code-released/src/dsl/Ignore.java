@@ -24,6 +24,7 @@ public class Ignore<A> implements Query<A,A> {
 	@Override
 	public void next(A item, Sink<A> sink) {
 		if (i < n) {
+			System.out.println("Ignoring " + item);
 			i++;
 		} else {
 			sink.next(item);

@@ -42,6 +42,7 @@ public class SWindowInv<A> implements Query<A,A> {
 
 	@Override
 	public void next(A item, Sink<A> sink) {
+		System.out.println("Window with " + item);
 		if (nElements == wndSize) {
 			agg = remove.apply(agg, buffer[indexOldest]);
 			buffer[indexOldest] = item;

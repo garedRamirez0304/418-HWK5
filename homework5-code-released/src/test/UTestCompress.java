@@ -46,10 +46,14 @@ public class UTestCompress {
 		
 		int n = arr.length;
 		q.start(sink);
+		System.out.println("In here");
 		assertEquals(0, sink.count);
 		for (int i = 0; i < n; i++) {
+
 			assertEquals(i, sink.count);
 			q.next(arr[i], sink);
+			System.out.println("Last Value " + sink.last);
+			System.out.println("-------");
 			assertEquals(arr[i], sink.last);
 		}
 		q.end(sink);
